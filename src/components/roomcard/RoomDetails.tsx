@@ -10,7 +10,7 @@ const RoomDetails: React.FC<RoomDetailsProps> = ({ room }) => {
 
   const navigate = useNavigate();
   const handleSeeDetails = () => {
-    navigate("/", { state: room });
+    navigate("/details-room", { state: room });
   };
 
   return (

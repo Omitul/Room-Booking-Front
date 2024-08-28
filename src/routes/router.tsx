@@ -7,6 +7,7 @@ import About from "../pages/about/About";
 import Contact from "../pages/contact/Contact";
 import MeetingRoom from "../pages/meetingroom/MeetingRoom";
 import Login from "../pages/login/Login";
+import { DetailsRoom } from "../pages/detailscard/DetailsRoom";
 
 const router = createBrowserRouter([
   {
@@ -33,6 +34,10 @@ const router = createBrowserRouter([
       {
         path: "login",
         element: <Login></Login>,
+      },
+      {
+        path: "details-room",
+        element: <DetailsRoom></DetailsRoom>,
       },
 
       // {
