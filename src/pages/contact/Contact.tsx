@@ -1,5 +1,3 @@
-import React from "react";
-
 const ContactUs = () => {
   return (
     <div className="flex flex-col items-center justify-center p-6 bg-gradient-to-r from-red-100 to-green-200 min-h-screen">
