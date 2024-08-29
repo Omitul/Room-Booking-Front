@@ -7,22 +7,48 @@ const Navbar = () => {
 
   const links = (
     <>
-      <li>
-        <NavLink to="/">Home</NavLink>
+      <li className="mx-6">
+        <NavLink
+          to="/"
+          className="text-lg  text-black hover:bg-white font-medium"
+        >
+          Home
+        </NavLink>
       </li>
-      <li>
-        <NavLink to="meeting-room"> Meeting Rooms</NavLink>
+      <li className="mx-6">
+        <NavLink
+          to="meeting-room"
+          className="text-lg  text-black hover:bg-white font-medium"
+        >
+          {" "}
+          Meeting Rooms
+        </NavLink>
       </li>
 
-      <li>
-        <NavLink to="about-us">About Us</NavLink>
+      <li className="mx-6">
+        <NavLink
+          to="about-us"
+          className="text-lg  text-black hover:bg-white font-medium"
+        >
+          About Us
+        </NavLink>
       </li>
-      <li>
-        <NavLink to="contact-us">Contact Us</NavLink>
+      <li className="mx-6">
+        <NavLink
+          to="contact-us"
+          className="text-lg  text-black hover:bg-white font-medium"
+        >
+          Contact Us
+        </NavLink>
       </li>
       {!role && (
-        <li>
-          <NavLink to="login">Login</NavLink>
+        <li className="mx-6">
+          <NavLink
+            to="login"
+            className="text-lg  text-black hover:bg-white font-medium"
+          >
+            Login
+          </NavLink>
         </li>
       )}
     </>
@@ -50,7 +76,7 @@ const Navbar = () => {
           </div>
           <ul
             tabIndex={0}
-            className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
+            className="menu menu-sm dropdown-content bg-base-100 rounded-box z-50 mt-2 w-52 p-2 shadow-lg absolute top-full left-0 overflow-auto max-h-60 text-xs text-sm"
           >
             {links}
           </ul>
