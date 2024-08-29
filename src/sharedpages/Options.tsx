@@ -1,5 +1,7 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
+import { logout } from "../redux/features/auth/authSlice";
 
 interface BottomNavProps {
   role: string;
@@ -10,6 +12,13 @@ const Options: React.FC<BottomNavProps> = ({ role }) => {
 
   const handleDropdownToggle = () => {
     setIsDropdownOpen((prev) => !prev);
+  };
+
+  const dispatch = useDispatch();
+
+  const handleLogout = () => {
+    dispatch(logout());
+    alert("Logging out");
   };
 
   return (
@@ -58,7 +67,7 @@ const Options: React.FC<BottomNavProps> = ({ role }) => {
             )}
           </div>
           <button
-            onClick={() => alert("Logging out")}
+            onClick={handleLogout}
             className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 font-semibold absolute right-4"
           >
             Logout
