@@ -9,6 +9,9 @@ import MeetingRoom from "../pages/meetingroom/MeetingRoom";
 import Login from "../pages/login/Login";
 import { DetailsRoom } from "../pages/detailscard/DetailsRoom";
 import Register from "../pages/register/Register";
+import Room from "../pages/admin/room-management/Room";
+import Slots from "../pages/admin/slots-management/Slots";
+import Booking from "../pages/admin/booking-management/Booking";
 
 const router = createBrowserRouter([
   {
@@ -43,6 +46,18 @@ const router = createBrowserRouter([
       {
         path: "register",
         element: <Register></Register>,
+      },
+      {
+        path: "admin/rooms",
+        element: <Room></Room>,
+      },
+      {
+        path: "admin/slots",
+        element: <Slots></Slots>,
+      },
+      {
+        path: "admin/bookings",
+        element: <Booking></Booking>,
       },
 
       // {

@@ -37,7 +37,7 @@ const Options: React.FC<BottomNavProps> = ({ role }) => {
                 <ul className="list-none p-2">
                   <li>
                     <Link
-                      to="/admin/dashboard/overview"
+                      to="/admin/rooms"
                       className="block px-4 py-2 hover:bg-gray-600 font-serif font-semibold"
                       onClick={() => setIsDropdownOpen(false)}
                     >
@@ -46,7 +46,7 @@ const Options: React.FC<BottomNavProps> = ({ role }) => {
                   </li>
                   <li>
                     <Link
-                      to="/admin/dashboard/users"
+                      to="/admin/slots"
                       className="block px-4 py-2 hover:bg-gray-600 font-serif font-semibold"
                       onClick={() => setIsDropdownOpen(false)}
                     >
@@ -55,7 +55,7 @@ const Options: React.FC<BottomNavProps> = ({ role }) => {
                   </li>
                   <li>
                     <Link
-                      to="/admin/dashboard/settings"
+                      to="/admin/bookings"
                       className="block px-4 py-2 hover:bg-gray-600 font-serif font-semibold"
                       onClick={() => setIsDropdownOpen(false)}
                     >
