@@ -1,7 +1,10 @@
 import "daisyui/dist/full.css"; ///etar jnnoi@!ZZ
 import { Link, NavLink } from "react-router-dom";
+import { useAppSelector } from "../redux/hook";
 
 const Navbar = () => {
+  const role = useAppSelector((state) => state.auth.role);
+
   const links = (
     <>
       <li>
@@ -17,9 +20,11 @@ const Navbar = () => {
       <li>
         <NavLink to="contact-us">Contact Us</NavLink>
       </li>
-      <li>
-        <NavLink to="login">Login</NavLink>
-      </li>
+      {!role && (
+        <li>
+          <NavLink to="login">Login</NavLink>
+        </li>
+      )}
     </>
   );
 

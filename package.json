@@ -24,6 +24,7 @@
     "react-router-dom": "^6.24.1",
     "react-star-ratings": "^2.3.0",
     "react-toastify": "^10.0.5",
+    "redux-persist": "^6.0.0",
     "styled-components": "^6.1.11",
     "sweetalert2": "^11.12.4",
     "sweetalert2-react-content": "^5.0.7"
@@ -32,6 +33,7 @@
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "@types/react-star-ratings": "^2.3.3",
+    "@types/redux-persist": "^4.3.1",
     "@typescript-eslint/eslint-plugin": "^7.13.1",
     "@typescript-eslint/parser": "^7.13.1",
     "@vitejs/plugin-react": "^4.3.1",

@@ -1,15 +1,15 @@
 import React from "react";
-import { useAddLoginMutation } from "../../redux/features/login/login.api";
+import { useAddLoginMutation } from "../../redux/features/auth/login.api";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
+import { useAppDispatch } from "../../redux/hook";
+import { setUserRole } from "../../redux/features/auth/authSlice";
 
-type TError = {
-  message: string;
-};
 const LoginForm = () => {
   const [addLogin, { isLoading }] = useAddLoginMutation();
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -21,7 +21,7 @@ const LoginForm = () => {
 
     try {
       const res = await addLogin(data).unwrap();
-      console.log(res);
+      console.log("res", res.data.role);
       console.log("token:", jwtDecode(res.token));
       console.log("Login successful");
       Swal.fire({
@@ -30,6 +30,8 @@ const LoginForm = () => {
         icon: "success",
         confirmButtonText: "OK",
       });
+      console.log("role", res.data.role);
+      dispatch(setUserRole(res.data.role));
       navigate("/");
     } catch (error: any) {
       console.error("Login failed:", error);
@@ -78,7 +80,7 @@ const LoginForm = () => {
             type="password"
             id="password"
             name="password"
-            defaultValue="1234"
+            defaultValue="ph-password"
             className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             required
           />
