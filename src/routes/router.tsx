@@ -8,6 +8,7 @@ import Contact from "../pages/contact/Contact";
 import MeetingRoom from "../pages/meetingroom/MeetingRoom";
 import Login from "../pages/login/Login";
 import { DetailsRoom } from "../pages/detailscard/DetailsRoom";
+import Register from "../pages/register/Register";
 
 const router = createBrowserRouter([
   {
@@ -38,6 +39,10 @@ const router = createBrowserRouter([
       {
         path: "details-room",
         element: <DetailsRoom></DetailsRoom>,
+      },
+      {
+        path: "register",
+        element: <Register></Register>,
       },
 
       // {
