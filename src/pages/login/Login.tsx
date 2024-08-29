@@ -1,7 +1,7 @@
 import React from "react";
 import { useAddLoginMutation } from "../../redux/features/auth/login.api";
 import Swal from "sweetalert2";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import { useAppDispatch } from "../../redux/hook";
 import { setUserRole } from "../../redux/features/auth/authSlice";
@@ -93,6 +93,12 @@ const LoginForm = () => {
         >
           {isLoading ? "Submitting..." : "Submit"}
         </button>
+        <Link
+          to="/register"
+          className="mt-4 block w-full py-2 px-4 bg-blue-500 text-white font-semibold rounded-md shadow-sm hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 text-center"
+        >
+          Register
+        </Link>
       </form>
     </div>
   );

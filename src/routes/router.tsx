@@ -12,6 +12,8 @@ import Register from "../pages/register/Register";
 import Room from "../pages/admin/room-management/Room";
 import Slots from "../pages/admin/slots-management/Slots";
 import Booking from "../pages/admin/booking-management/Booking";
+import MyBookings from "../pages/mybookings/MyBookings";
+import Dashboard from "../pages/dashboard/Dashboard";
 
 const router = createBrowserRouter([
   {
@@ -58,6 +60,15 @@ const router = createBrowserRouter([
       {
         path: "admin/bookings",
         element: <Booking></Booking>,
+      },
+      {
+        path: "mybookings",
+        element: <MyBookings></MyBookings>,
+      },
+
+      {
+        path: "dashboard",
+        element: <Dashboard></Dashboard>,
       },
 
       // {
