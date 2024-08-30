@@ -1,3 +1,4 @@
+import { TypeRoom } from "../../../types";
 import { baseApi } from "../../api/baseApi";
 
 export const RoomApi = baseApi.injectEndpoints({
@@ -19,23 +20,28 @@ export const RoomApi = baseApi.injectEndpoints({
       providesTags: ["posts"],
     }),
 
-    // DeleteProduct: builder.mutation({
-    //   query: (id: string) => ({
-    //     url: `product/${id}`,
-    //     method: "DELETE",
-    //   }),
-    //   invalidatesTags: ["posts"],
-    // }),
+    DeleteRoom: builder.mutation({
+      query: (id: string) => ({
+        url: `rooms/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["posts"],
+    }),
 
-    // UpdateProduct: builder.mutation({
-    //   query: (data: { id: string; payload: Product }) => ({
-    //     url: `product/${data.id}`,
-    //     method: "PUT",
-    //     body: data.payload,
-    //   }),
-    //   invalidatesTags: ["posts"],
-    // }),
+    UpdateRoom: builder.mutation({
+      query: (data: { id: string; payload: TypeRoom }) => ({
+        url: `rooms/${data.id}`,
+        method: "PUT",
+        body: data.payload,
+      }),
+      invalidatesTags: ["posts"],
+    }),
   }),
 });
 
-export const { useAddRoomMutation, useGetRoomQuery } = RoomApi;
+export const {
+  useAddRoomMutation,
+  useGetRoomQuery,
+  useDeleteRoomMutation,
+  useUpdateRoomMutation,
+} = RoomApi;

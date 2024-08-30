@@ -48,28 +48,34 @@ const Booking = () => {
 
   const columns = [
     {
-      name: <div className="text-2xl font-semibold">Room name</div>,
+      name: (
+        <div className="md:text-2xl lg:text-2xl  font-semibold">Room name</div>
+      ),
       selector: (row: DataItem) => row.room.name,
       cell: (row: DataItem) => (
         <div className="text-sm md:text-lg lg:text-lg">{row.room?.name}</div>
       ),
     },
     {
-      name: <div className="text-2xl font-semibold">User name</div>,
+      name: (
+        <div className="md:text-2xl lg:text-2xl  font-semibold">User name</div>
+      ),
       selector: (row: DataItem) => row.user.name,
       cell: (row: DataItem) => (
         <div className="text-sm md:text-lg lg:text-lg">{row.user.name}</div>
       ),
     },
     {
-      name: <div className="text-2xl font-semibold">Date</div>,
+      name: <div className="md:text-2xl lg:text-2xl  font-semibold">Date</div>,
       selector: (row: DataItem) => `${row.date}`,
       cell: (row: DataItem) => (
         <div className="text-sm md:text-lg lg:text-lg">{`${row.date}`}</div>
       ),
     },
     {
-      name: <div className="text-2xl font-semibold">Status</div>,
+      name: (
+        <div className="md:text-2xl lg:text-2xl  font-semibold">Status</div>
+      ),
       selector: (row: DataItem) => row.isConfirmed,
       cell: (row: DataItem) => (
         <div className="text-sm md:text-lg lg:text-lg">

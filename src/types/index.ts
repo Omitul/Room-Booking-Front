@@ -19,16 +19,17 @@ export type TRoom = {
 //   isBooked: boolean;
 // };
 
-// type Room = {
-//   image: string;
-//   name: string;
-//   roomNo: number;
-//   floorNo: number;
-//   capacity: number;
-//   pricePerSlot: number;
-//   aminities: string[];
-//   isDeleted: boolean;
-// };
+export type TypeRoom = {
+  _id?: string;
+  name: string;
+  image?: string;
+  roomNo: number;
+  floorNo: number;
+  capacity: number;
+  pricePerSlot: number;
+  aminities?: string[];
+  isDeleted?: boolean;
+};
 
 type User = {
   _id: string;
