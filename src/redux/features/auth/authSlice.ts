@@ -3,17 +3,22 @@ import {
   getRoleFromLocalStorage,
   setRoleToLocalStorage,
   removeRoleFromLocalStorage,
+  getTokenFromLocalStorage,
+  setTokenToLocalStorage,
+  removeTokenFromLocalStorage,
 } from "../../../utils/localStorage";
 
 type AuthState = {
   role: string | null;
+  token: string | null;
 };
 
 const initialState: AuthState = {
   role: getRoleFromLocalStorage(),
+  token: getTokenFromLocalStorage(),
 };
 
-const authSlices = createSlice({
+const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
@@ -21,13 +26,19 @@ const authSlices = createSlice({
       state.role = action.payload;
       setRoleToLocalStorage(action.payload);
     },
+    setToken: (state, action: PayloadAction<string>) => {
+      state.token = action.payload;
+      setTokenToLocalStorage(action.payload);
+    },
     logout: (state) => {
       state.role = null;
+      state.token = null;
       removeRoleFromLocalStorage();
+      removeTokenFromLocalStorage();
     },
   },
 });
 
-export const { setUserRole, logout } = authSlices.actions;
+export const { setUserRole, setToken, logout } = authSlice.actions;
 
-export default authSlices.reducer;
+export default authSlice.reducer;

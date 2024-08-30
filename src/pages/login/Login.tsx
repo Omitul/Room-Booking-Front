@@ -4,7 +4,7 @@ import Swal from "sweetalert2";
 import { Link, useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import { useAppDispatch } from "../../redux/hook";
-import { setUserRole } from "../../redux/features/auth/authSlice";
+import { setToken, setUserRole } from "../../redux/features/auth/authSlice";
 
 const LoginForm = () => {
   const [addLogin, { isLoading }] = useAddLoginMutation();
@@ -30,8 +30,10 @@ const LoginForm = () => {
         icon: "success",
         confirmButtonText: "OK",
       });
-      console.log("role", res.data.role);
+
+      console.log("Token:::::", res.token);
       dispatch(setUserRole(res.data.role));
+      dispatch(setToken(res.token));
       navigate("/");
     } catch (error: any) {
       console.error("Login failed:", error);
