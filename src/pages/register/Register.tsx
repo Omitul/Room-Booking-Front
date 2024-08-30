@@ -1,10 +1,9 @@
 import React from "react";
-import { useAddLoginMutation } from "../../redux/features/auth/login.api";
 import Swal from "sweetalert2";
-import { setUserRole } from "../../redux/features/auth/authSlice";
+import { useAddRegistrationMutation } from "../../redux/features/auth/registration.api";
 
 const Registration = () => {
-  const [addLogin, { isLoading }] = useAddLoginMutation();
+  const [addRegistration, { isLoading }] = useAddRegistrationMutation();
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -15,10 +14,11 @@ const Registration = () => {
       password: formData.get("password") as string,
       phone: formData.get("phone") as string,
       role: formData.get("role") as string,
+      address: formData.get("address") as string,
     };
 
     try {
-      const res = await addLogin(data).unwrap();
+      const res = await addRegistration(data).unwrap();
       Swal.fire({
         title: "Success!",
         text: "Successfully Registered",
@@ -120,6 +120,22 @@ const Registration = () => {
             type="text"
             id="role"
             name="role"
+            className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            required
+          />
+        </div>
+
+        <div className="mb-4">
+          <label
+            htmlFor="address"
+            className="block text-gray-700 font-medium mb-2"
+          >
+            Address
+          </label>
+          <input
+            type="text"
+            id="address"
+            name="address"
             className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             required
           />
