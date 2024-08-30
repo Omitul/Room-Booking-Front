@@ -35,6 +35,7 @@ const LoginForm = () => {
       dispatch(setUserRole(res.data.role));
       dispatch(setToken(res.token));
       navigate("/");
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       console.error("Login failed:", error);
       const errorMessage =

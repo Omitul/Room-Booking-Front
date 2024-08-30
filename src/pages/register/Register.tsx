@@ -26,6 +26,7 @@ const Registration = () => {
         confirmButtonText: "OK",
       });
       console.log("role", res.data.role);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       console.error("Registration failed:", error);
       const errorMessage =
