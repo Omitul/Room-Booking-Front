@@ -10,24 +10,25 @@ export type TRoom = {
   isDeleted: boolean;
 };
 
-// type Slot = {
-//   _id: string;
-//   room: string;
-//   date: string;
-//   startTime: string;
-//   endTime: string;
-//   isBooked: boolean;
-// };
+export type TypeSlot = {
+  _id?: string;
+  roomId?: string;
+  roomName?: string;
+  roomNo?: number;
+  date: string;
+  startTime: string;
+  endTime: string;
+};
 
 export type TypeRoom = {
   _id?: string;
   name: string;
-  image?: string;
+  image: string;
   roomNo: number;
   floorNo: number;
   capacity: number;
   pricePerSlot: number;
-  aminities?: string[];
+  aminities: string[];
   isDeleted?: boolean;
 };
 

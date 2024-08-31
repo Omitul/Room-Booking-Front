@@ -1,23 +1,23 @@
 import DataTable from "react-data-table-component";
 import Swal from "sweetalert2";
 import { useState } from "react";
-
 import { TypeRoom } from "../../../types";
 import {
   useDeleteRoomMutation,
   useGetRoomQuery,
   useUpdateRoomMutation,
 } from "../../../redux/features/Room/Room.api";
-import UpdateModalRoom from "../../../components/updateModals/UpdateModalRoom";
+import UpdateRoomModal from "../../../components/updateModals/UpdateRoomModal";
 
-const Room = () => {
+const RoomTable = () => {
   const initialRoom: TypeRoom = {
-    _id: "",
     name: "",
+    image: "",
     roomNo: 0,
     floorNo: 0,
     capacity: 0,
     pricePerSlot: 0,
+    aminities: [],
   };
 
   const { data, isLoading } = useGetRoomQuery({});
@@ -35,32 +35,29 @@ const Room = () => {
   }
 
   const handleUpdate = async (data: TypeRoom) => {
-    if (!data._id) {
-      console.error("Invalid Room ID:", data._id);
-      return;
-    }
-
     const updatedRoom = {
       name: data.name,
+      image: data.image,
       roomNo: data.roomNo,
       floorNo: data.floorNo,
       capacity: data.capacity,
       pricePerSlot: data.pricePerSlot,
+      aminities: data.aminities,
     };
 
     setSelectedRoom({ ...data, ...updatedRoom });
     setShowUpdateModal(true);
   };
 
-  const handleDelete = async (RoomId: string) => {
-    if (!RoomId) {
-      console.error("Invalid Room ID:", RoomId);
-      await Swal.fire("Invalid Room ID", "", "error");
+  const handleDelete = async (roomId: string) => {
+    if (!roomId) {
+      console.error("Invalid room ID:", roomId);
+      await Swal.fire("Invalid room ID", "", "error");
       return;
     }
 
     Swal.fire({
-      title: "Are you sure you want to delete this Room?",
+      title: "Are you sure you want to delete this room?",
       showDenyButton: true,
       showCancelButton: true,
       confirmButtonText: "Yes",
@@ -68,7 +65,7 @@ const Room = () => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          await deleteRoom(RoomId).unwrap();
+          await deleteRoom(roomId).unwrap();
           Swal.fire("Deleted Successfully!", "", "success");
         } catch (error) {
           console.error("Failed to delete:", error);
@@ -94,10 +91,21 @@ const Room = () => {
       ),
     },
     {
-      name: <div style={{ fontSize: "2rem", fontWeight: "bold" }}>Room No</div>,
+      name: (
+        <div style={{ fontSize: "2rem", fontWeight: "bold" }}>Room No.</div>
+      ),
       selector: (row: TypeRoom) => row.roomNo,
       cell: (row: TypeRoom) => (
         <div style={{ fontSize: "1.5rem" }}>{row.roomNo}</div>
+      ),
+    },
+    {
+      name: (
+        <div style={{ fontSize: "2rem", fontWeight: "bold" }}>Floor No.</div>
+      ),
+      selector: (row: TypeRoom) => row.floorNo,
+      cell: (row: TypeRoom) => (
+        <div style={{ fontSize: "1.5rem" }}>{row.floorNo}</div>
       ),
     },
     {
@@ -122,10 +130,7 @@ const Room = () => {
     },
     {
       cell: (row: TypeRoom) => (
-        <button
-          className="btn bg-purple-400 ml-52"
-          onClick={() => handleUpdate(row)}
-        >
+        <button className="btn bg-purple-400" onClick={() => handleUpdate(row)}>
           Update
         </button>
       ),
@@ -133,7 +138,7 @@ const Room = () => {
     {
       cell: (row: TypeRoom) => (
         <button
-          className="btn bg-red-600 mr-52"
+          className="btn bg-red-600"
           onClick={() => handleDelete(row._id as string)}
         >
           Delete
@@ -153,14 +158,10 @@ const Room = () => {
           <div key={row._id} className="mb-4 p-4 border rounded-lg">
             <div className="text-lg font-bold">{row.name}</div>
             <div className="text-sm text-gray-500">
-              RoomNo: {row.roomNo} BDT
+              Price: {row.pricePerSlot} BDT
             </div>
-            <div className="text-sm text-gray-500">FloorNo: {row.floorNo}</div>
             <div className="text-sm text-gray-500">
               Capacity: {row.capacity}
-            </div>
-            <div className="text-sm text-gray-500">
-              Price Per Slot: {row.pricePerSlot}
             </div>
             <div className="mt-2 flex space-x-2">
               <button
@@ -180,10 +181,10 @@ const Room = () => {
         ))}
       </div>
 
-      {/* UpdateModalFrom for the Room  */}
+      {/* larger device  */}
       {showUpdateModal && selectedRoom && (
-        <UpdateModalRoom
-          Room={selectedRoom}
+        <UpdateRoomModal
+          room={selectedRoom}
           onClose={() => setShowUpdateModal(false)}
           onUpdate={async (updatedRoom: TypeRoom) => {
             try {
@@ -194,7 +195,7 @@ const Room = () => {
               setShowUpdateModal(false);
             } catch (error) {
               console.error("Update failed:", error);
-              await Swal.fire("Failed to update Room", "", "error");
+              await Swal.fire("Failed to update room", "", "error");
             }
           }}
         />
@@ -203,4 +204,4 @@ const Room = () => {
   );
 };
 
-export default Room;
+export default RoomTable;

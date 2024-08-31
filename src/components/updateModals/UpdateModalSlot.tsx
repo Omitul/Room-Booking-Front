@@ -1,45 +1,31 @@
 import React, { useState, useEffect } from "react";
 import Swal from "sweetalert2";
-import { TypeRoom } from "../../types";
+import { TypeSlot } from "../../types";
 
-type UpdateModalProps = {
-  Room: TypeRoom;
+type UpdateModalSlotProps = {
+  slot: TypeSlot;
   onClose: () => void;
-  onUpdate: (updatedRoom: TypeRoom) => void;
+  onUpdate: (updatedSlot: TypeSlot) => void;
 };
 
-const UpdateModalRoom = ({ Room, onClose, onUpdate }: UpdateModalProps) => {
-  const [formData, setFormData] = useState<TypeRoom>({
-    _id: Room._id,
-    name: Room.name,
-    roomNo: Room.roomNo,
-    floorNo: Room.floorNo,
-    capacity: Room.capacity,
-    pricePerSlot: Room.pricePerSlot,
+const UpdateModalSlot = ({ slot, onClose, onUpdate }: UpdateModalSlotProps) => {
+  const [formData, setFormData] = useState<TypeSlot>({
+    roomName: slot.roomName || "",
+    roomNo: slot.roomNo || 0,
+    date: slot.date,
+    startTime: slot.startTime,
+    endTime: slot.endTime,
   });
 
   useEffect(() => {
-    setFormData({
-      _id: Room._id,
-      name: Room.name,
-      roomNo: Room.roomNo,
-      floorNo: Room.floorNo,
-      capacity: Room.capacity,
-      pricePerSlot: Room.pricePerSlot,
-    });
-  }, [Room]);
+    setFormData(slot);
+  }, [slot]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
-      [name]:
-        name === "pricePerSlot" ||
-        name === "capacity" ||
-        name === "floorNo" ||
-        name === "roomNo"
-          ? Number(value)
-          : value,
+      [name]: value,
     });
   };
 
@@ -49,15 +35,15 @@ const UpdateModalRoom = ({ Room, onClose, onUpdate }: UpdateModalProps) => {
       onUpdate(formData);
       Swal.fire({
         icon: "success",
-        title: "Room Updated",
-        text: "Room details updated successfully!",
+        title: "Slot Updated",
+        text: "Slot details updated successfully!",
       });
     } catch (error) {
       console.error("Update failed:", error);
       Swal.fire({
         icon: "error",
         title: "Error",
-        text: "An error occurred while updating the room.",
+        text: "An error occurred while updating the slot.",
       });
     }
   };
@@ -66,14 +52,14 @@ const UpdateModalRoom = ({ Room, onClose, onUpdate }: UpdateModalProps) => {
     <div className="fixed inset-0 flex items-center justify-center z-50">
       <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
       <div className="bg-white p-8 rounded-lg z-10 shadow-lg">
-        <h2 className="text-xl font-semibold mb-4">Update Room</h2>
+        <h2 className="text-xl font-semibold mb-4">Update Slot</h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <label className="block font-semibold">Room Name</label>
             <input
               type="text"
-              name="name"
-              value={formData.name}
+              name="roomName"
+              value={formData.roomName}
               onChange={handleInputChange}
               className="form-input mt-1"
               required
@@ -91,33 +77,33 @@ const UpdateModalRoom = ({ Room, onClose, onUpdate }: UpdateModalProps) => {
             />
           </div>
           <div className="mb-4">
-            <label className="block font-semibold">Floor No</label>
+            <label className="block font-semibold">Date</label>
             <input
-              type="number"
-              name="floorNo"
-              value={formData.floorNo}
+              type="date"
+              name="date"
+              value={formData.date}
               onChange={handleInputChange}
               className="form-input mt-1"
               required
             />
           </div>
           <div className="mb-4">
-            <label className="block font-semibold">Capacity</label>
+            <label className="block font-semibold">Start Time</label>
             <input
-              type="number"
-              name="capacity"
-              value={formData.capacity}
+              type="time"
+              name="startTime"
+              value={formData.startTime}
               onChange={handleInputChange}
               className="form-input mt-1"
               required
             />
           </div>
           <div className="mb-4">
-            <label className="block font-semibold">Price Per Slot</label>
+            <label className="block font-semibold">End Time</label>
             <input
-              type="number"
-              name="pricePerSlot"
-              value={formData.pricePerSlot}
+              type="time"
+              name="endTime"
+              value={formData.endTime}
               onChange={handleInputChange}
               className="form-input mt-1"
               required
@@ -144,4 +130,4 @@ const UpdateModalRoom = ({ Room, onClose, onUpdate }: UpdateModalProps) => {
   );
 };
 
-export default UpdateModalRoom;
+export default UpdateModalSlot;
