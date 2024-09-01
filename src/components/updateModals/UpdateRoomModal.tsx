@@ -16,7 +16,7 @@ const UpdateRoomModal = ({ room, onUpdate, onClose }: UpdateRoomModalProps) => {
     floorNo: 0,
     capacity: 0,
     pricePerSlot: 0,
-    aminities: [],
+    amenities: [],
   });
 
   useEffect(() => {
@@ -34,7 +34,7 @@ const UpdateRoomModal = ({ room, onUpdate, onClose }: UpdateRoomModalProps) => {
       name === "roomNo" ||
       name === "floorNo"
         ? parseFloat(value) || 0
-        : name === "aminities"
+        : name === "amenities"
         ? value.split(",")
         : value;
 
@@ -137,8 +137,8 @@ const UpdateRoomModal = ({ room, onUpdate, onClose }: UpdateRoomModalProps) => {
               <label className="block font-semibold">Aminities</label>
               <input
                 type="text"
-                name="aminities"
-                value={formData.aminities?.join(",")}
+                name="amenities"
+                value={formData.amenities?.join(",")}
                 onChange={handleInputChange}
                 className="form-input mt-1"
               />

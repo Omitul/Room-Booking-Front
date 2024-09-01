@@ -14,7 +14,7 @@ const RoomDashBoard = () => {
     floorNo: 0,
     capacity: 0,
     pricePerSlot: 0,
-    aminities: [], // Initialize as an empty array
+    amenities: [],
   });
 
   const toggleModal = () => {
@@ -26,7 +26,7 @@ const RoomDashBoard = () => {
         floorNo: 0,
         capacity: 0,
         pricePerSlot: 0,
-        aminities: [], // Ensure aminities is always an array
+        amenities: [],
       });
     }
     setShowModal(!showModal);
@@ -47,8 +47,8 @@ const RoomDashBoard = () => {
       name === "roomNo" ||
       name === "floorNo"
         ? parseFloat(value) || 0
-        : name === "aminities"
-        ? value.split(",")
+        : name === "amenities"
+        ? value.split(",").map((item) => item.trim())
         : value;
 
     setFormData({
@@ -56,17 +56,23 @@ const RoomDashBoard = () => {
       [name]: newValue,
     });
   };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setShowModal(!showModal);
     try {
       const updatedData = {
         ...formData,
-        pricePerSlot: Number(formData.pricePerSlot),
+        roomNo: Number(formData.roomNo),
+        floorNo: Number(formData.floorNo),
         capacity: Number(formData.capacity),
+        pricePerSlot: Number(formData.pricePerSlot),
+        amenities: formData.amenities, // Ensure amenities is an array
       };
 
-      await addRoom(updatedData).unwrap();
+      const res = await addRoom(updatedData).unwrap();
+
+      console.log(res);
 
       Swal.fire({
         icon: "success",
@@ -81,7 +87,7 @@ const RoomDashBoard = () => {
         floorNo: 0,
         capacity: 0,
         pricePerSlot: 0,
-        aminities: [], // Reset aminities to an empty array
+        amenities: [], // Reset amenities to an empty array
       });
       setShowModal(!showModal);
     } catch (error) {
@@ -130,7 +136,7 @@ const RoomDashBoard = () => {
                 <input
                   type="number"
                   name="roomNo"
-                  value={formData.roomNo}
+                  value={formData.roomNo.toString()}
                   onChange={handleInputChange}
                   className="form-input mt-1"
                   required
@@ -141,7 +147,7 @@ const RoomDashBoard = () => {
                 <input
                   type="number"
                   name="floorNo"
-                  value={formData.floorNo}
+                  value={formData.floorNo.toString()}
                   onChange={handleInputChange}
                   className="form-input mt-1"
                   required
@@ -152,7 +158,7 @@ const RoomDashBoard = () => {
                 <input
                   type="number"
                   name="capacity"
-                  value={formData.capacity}
+                  value={formData.capacity.toString()}
                   onChange={handleInputChange}
                   className="form-input mt-1"
                   required
@@ -163,7 +169,7 @@ const RoomDashBoard = () => {
                 <input
                   type="number"
                   name="pricePerSlot"
-                  value={formData.pricePerSlot}
+                  value={formData.pricePerSlot.toString()}
                   onChange={handleInputChange}
                   className="form-input mt-1"
                   required
@@ -175,8 +181,8 @@ const RoomDashBoard = () => {
                 </label>
                 <input
                   type="text"
-                  name="aminities"
-                  value={formData?.aminities?.join(", ")}
+                  name="amenities"
+                  value={formData.amenities?.join(", ")}
                   onChange={handleInputChange}
                   className="form-input mt-1"
                 />

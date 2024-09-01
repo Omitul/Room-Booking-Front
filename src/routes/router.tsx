@@ -9,11 +9,11 @@ import MeetingRoom from "../pages/meetingroom/MeetingRoom";
 import Login from "../pages/login/Login";
 import { DetailsRoom } from "../pages/detailscard/DetailsRoom";
 import Register from "../pages/register/Register";
-import Slots from "../pages/admin/slots-management/Slots";
 import Booking from "../pages/admin/booking-management/Booking";
 import MyBookings from "../pages/mybookings/MyBookings";
 import Dashboard from "../pages/dashboard/Dashboard";
 import RoomDashBoard from "../pages/admin/room-management/RoomDashboard";
+import SlotDashboard from "../pages/admin/slots-management/SlotDashboard";
 
 const router = createBrowserRouter([
   {
@@ -55,7 +55,7 @@ const router = createBrowserRouter([
       },
       {
         path: "admin/slots",
-        element: <Slots></Slots>,
+        element: <SlotDashboard></SlotDashboard>,
       },
       {
         path: "admin/bookings",

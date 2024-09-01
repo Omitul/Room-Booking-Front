@@ -12,9 +12,8 @@ export type TRoom = {
 
 export type TypeSlot = {
   _id?: string;
-  roomId?: string;
-  roomName?: string;
-  roomNo?: number;
+  room?: string;
+  roomName: string;
   date: string;
   startTime: string;
   endTime: string;
@@ -28,7 +27,7 @@ export type TypeRoom = {
   floorNo: number;
   capacity: number;
   pricePerSlot: number;
-  aminities: string[];
+  amenities: string[];
   isDeleted?: boolean;
 };
 

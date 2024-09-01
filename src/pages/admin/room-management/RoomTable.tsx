@@ -17,7 +17,7 @@ const RoomTable = () => {
     floorNo: 0,
     capacity: 0,
     pricePerSlot: 0,
-    aminities: [],
+    amenities: [],
   };
 
   const { data, isLoading } = useGetRoomQuery({});
@@ -42,7 +42,7 @@ const RoomTable = () => {
       floorNo: data.floorNo,
       capacity: data.capacity,
       pricePerSlot: data.pricePerSlot,
-      aminities: data.aminities,
+      amenities: data.amenities,
     };
 
     setSelectedRoom({ ...data, ...updatedRoom });
