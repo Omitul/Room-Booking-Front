@@ -1,5 +1,3 @@
-// router.tsx
-
 import { createBrowserRouter } from "react-router-dom";
 import MainLayout from "../components/layout/MainLayout";
 import Home from "../pages/home/Home";
@@ -16,80 +14,89 @@ import SlotDashboard from "../pages/admin/slots-management/SlotDashboard";
 import DetailsRoom from "../pages/detailscard/DetailsRoom";
 import Checkout from "../pages/checkout/Checkout";
 import BookFormPage from "../pages/booknowform/BookFormPage";
+import NotFoundPage from "../pages/notfound/NotFoundRoute";
+import ProtectedRoute from "../components/layout/ProtectedRoute";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <MainLayout />,
     children: [
-      {
-        path: "meeting-room",
-        element: <MeetingRoom></MeetingRoom>,
-      },
-      {
-        path: "/",
-        element: <Home />,
-      },
-      {
-        path: "about-us",
-        element: <About></About>,
-      },
-      {
-        path: "contact-us",
-        element: <Contact></Contact>,
-      },
-
-      {
-        path: "login",
-        element: <Login></Login>,
-      },
-      {
-        path: "details-room",
-        element: <DetailsRoom></DetailsRoom>,
-      },
-      {
-        path: "register",
-        element: <Register></Register>,
-      },
+      { path: "meeting-room", element: <MeetingRoom /> },
+      { path: "/", element: <Home /> },
+      { path: "about-us", element: <About /> },
+      { path: "contact-us", element: <Contact /> },
+      { path: "login", element: <Login /> },
+      { path: "register", element: <Register /> },
       {
         path: "admin/rooms",
-        element: <RoomDashBoard></RoomDashBoard>,
+        element: (
+          <ProtectedRoute>
+            <RoomDashBoard />
+          </ProtectedRoute>
+        ),
       },
       {
         path: "admin/slots",
-        element: <SlotDashboard></SlotDashboard>,
+        element: (
+          <ProtectedRoute>
+            <SlotDashboard />
+          </ProtectedRoute>
+        ),
       },
       {
         path: "admin/bookings",
-        element: <Booking></Booking>,
+        element: (
+          <ProtectedRoute>
+            <Booking />
+          </ProtectedRoute>
+        ),
       },
       {
         path: "mybookings",
-        element: <MyBookings></MyBookings>,
+        element: (
+          <ProtectedRoute>
+            <MyBookings />
+          </ProtectedRoute>
+        ),
       },
-
+      {
+        path: "details-room",
+        element: (
+          <ProtectedRoute>
+            <DetailsRoom />
+          </ProtectedRoute>
+        ),
+      },
       {
         path: "dashboard",
-        element: <Dashboard></Dashboard>,
+        element: (
+          <ProtectedRoute>
+            <Dashboard />
+          </ProtectedRoute>
+        ),
       },
       {
         path: "checkout",
-        element: <Checkout></Checkout>,
+        element: (
+          <ProtectedRoute>
+            <Checkout />
+          </ProtectedRoute>
+        ),
       },
       {
         path: "bookingform",
-        element: <BookFormPage></BookFormPage>,
-      },
-      {
-        path: "checkout",
-        element: <Checkout></Checkout>,
+        element: (
+          <ProtectedRoute>
+            <BookFormPage />
+          </ProtectedRoute>
+        ),
       },
 
-      // {
-      //   path: "cart",
-      //   element: <Cart></Cart>,
-      // },
-      //Add more nested routes as needed
+      {
+        path: "*",
+        element: <NotFoundPage />, /// wrong routes
+      },
     ],
   },
 ]);
