@@ -13,12 +13,14 @@ export const RoomApi = baseApi.injectEndpoints({
     }),
 
     GetRoom: builder.query({
-      query: () => ({
+      query: ({ searchTerm = "", sortOption = "priceAscending" }) => ({
         url: "rooms",
         method: "GET",
+        params: { search: String(searchTerm), sort: String(sortOption) },
       }),
       providesTags: ["posts"],
     }),
+
     GetRoomById: builder.query({
       query: (id: string) => ({
         url: `rooms/${id}`,
