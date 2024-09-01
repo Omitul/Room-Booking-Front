@@ -1,6 +1,7 @@
 import DataTable from "react-data-table-component";
 import Swal from "sweetalert2";
 import {
+  useDeleteBookingsMutation,
   useGetBookingsQuery,
   useUpdateBookingsMutation,
 } from "../../../redux/features/Booking/Booking.api";
@@ -9,6 +10,7 @@ import { DataItem } from "../../../types";
 const Booking = () => {
   const { data, isLoading } = useGetBookingsQuery({});
   const [updateBooking] = useUpdateBookingsMutation();
+  const [deleteBooking] = useDeleteBookingsMutation();
 
   if (isLoading) {
     return <p>Loading.......</p>;
@@ -43,6 +45,30 @@ const Booking = () => {
     } catch (error) {
       console.error("Failed to reject:", error);
       Swal.fire("Failed to reject booking", "", "error");
+    }
+  };
+
+  const handleDelete = async (id: string) => {
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: "This action cannot be undone.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+      cancelButtonText: "Cancel",
+    });
+
+    if (result.isConfirmed) {
+      try {
+        const res = await deleteBooking(id).unwrap();
+        Swal.fire("Booking Deleted!", "", "success");
+        console.log(res);
+      } catch (error) {
+        console.error("Failed to Delete:", error);
+        Swal.fire("Failed to Delete booking", "", "error");
+      }
     }
   };
 
@@ -101,6 +127,13 @@ const Booking = () => {
             onClick={() => handleReject(row._id)}
           >
             Reject
+          </button>
+
+          <button
+            className="btn bg-red-500 mr-2"
+            onClick={() => handleDelete(row._id)}
+          >
+            Delete
           </button>
         </div>
       ),
