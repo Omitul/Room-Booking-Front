@@ -9,7 +9,7 @@ const RoomDashBoard = () => {
   const [showModal, setShowModal] = useState(false);
   const [formData, setFormData] = useState<TypeRoom>({
     name: "",
-    image: "",
+    image: [],
     roomNo: 0,
     floorNo: 0,
     capacity: 0,
@@ -21,7 +21,7 @@ const RoomDashBoard = () => {
     if (!showModal) {
       setFormData({
         name: "",
-        image: "",
+        image: [],
         roomNo: 0,
         floorNo: 0,
         capacity: 0,
@@ -47,7 +47,7 @@ const RoomDashBoard = () => {
       name === "roomNo" ||
       name === "floorNo"
         ? parseFloat(value) || 0
-        : name === "amenities"
+        : name === "amenities" || name === "image"
         ? value.split(",").map((item) => item.trim())
         : value;
 
@@ -67,7 +67,6 @@ const RoomDashBoard = () => {
         floorNo: Number(formData.floorNo),
         capacity: Number(formData.capacity),
         pricePerSlot: Number(formData.pricePerSlot),
-        amenities: formData.amenities, // Ensure amenities is an array
       };
 
       const res = await addRoom(updatedData).unwrap();
@@ -82,12 +81,12 @@ const RoomDashBoard = () => {
 
       setFormData({
         name: "",
-        image: "",
+        image: [],
         roomNo: 0,
         floorNo: 0,
         capacity: 0,
         pricePerSlot: 0,
-        amenities: [], // Reset amenities to an empty array
+        amenities: [],
       });
       setShowModal(!showModal);
     } catch (error) {
@@ -121,14 +120,15 @@ const RoomDashBoard = () => {
                 />
               </div>
               <div className="mb-4">
-                <label className="block font-semibold">Image</label>
+                <label className="block font-semibold">
+                  Image URLs (comma-separated)
+                </label>
                 <input
                   type="text"
                   name="image"
-                  value={formData.image}
+                  value={(formData.image as string[]).join(", ")}
                   onChange={handleInputChange}
                   className="form-input mt-1"
-                  required
                 />
               </div>
               <div className="mb-4">
@@ -182,7 +182,7 @@ const RoomDashBoard = () => {
                 <input
                   type="text"
                   name="amenities"
-                  value={formData.amenities?.join(", ")}
+                  value={(formData.amenities as string[]).join(", ")}
                   onChange={handleInputChange}
                   className="form-input mt-1"
                 />

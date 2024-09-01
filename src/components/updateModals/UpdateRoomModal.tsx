@@ -11,7 +11,7 @@ type UpdateRoomModalProps = {
 const UpdateRoomModal = ({ room, onUpdate, onClose }: UpdateRoomModalProps) => {
   const [formData, setFormData] = useState<TypeRoom>({
     name: "",
-    image: "",
+    image: [],
     roomNo: 0,
     floorNo: 0,
     capacity: 0,
@@ -34,8 +34,8 @@ const UpdateRoomModal = ({ room, onUpdate, onClose }: UpdateRoomModalProps) => {
       name === "roomNo" ||
       name === "floorNo"
         ? parseFloat(value) || 0
-        : name === "amenities"
-        ? value.split(",")
+        : name === "amenities" || name === "image"
+        ? value.split(",").map((item) => item.trim())
         : value;
 
     setFormData({
@@ -79,33 +79,35 @@ const UpdateRoomModal = ({ room, onUpdate, onClose }: UpdateRoomModalProps) => {
               />
             </div>
             <div className="mb-4">
-              <label className="block font-semibold">Image URL</label>
+              <label className="block font-semibold">
+                Image URLs (comma-separated)
+              </label>
               <input
                 type="text"
                 name="image"
-                value={formData.image}
+                value={(formData.image as string[]).join(", ")}
                 onChange={handleInputChange}
                 className="form-input mt-1"
                 required
               />
             </div>
             <div className="mb-4">
-              <label className="block font-semibold">Room No</label>
+              <label className="block font-semibold">Room No.</label>
               <input
                 type="number"
                 name="roomNo"
-                value={formData.roomNo}
+                value={formData.roomNo.toString()}
                 onChange={handleInputChange}
                 className="form-input mt-1"
                 required
               />
             </div>
             <div className="mb-4">
-              <label className="block font-semibold">Floor No</label>
+              <label className="block font-semibold">Floor No.</label>
               <input
                 type="number"
                 name="floorNo"
-                value={formData.floorNo}
+                value={formData.floorNo.toString()}
                 onChange={handleInputChange}
                 className="form-input mt-1"
                 required
@@ -127,18 +129,20 @@ const UpdateRoomModal = ({ room, onUpdate, onClose }: UpdateRoomModalProps) => {
               <input
                 type="number"
                 name="pricePerSlot"
-                value={formData.pricePerSlot}
+                value={formData.pricePerSlot.toString()}
                 onChange={handleInputChange}
                 className="form-input mt-1"
                 required
               />
             </div>
             <div className="mb-4">
-              <label className="block font-semibold">Aminities</label>
+              <label className="block font-semibold">
+                Amenities (comma-separated)
+              </label>
               <input
                 type="text"
                 name="amenities"
-                value={formData.amenities?.join(",")}
+                value={(formData.amenities as string[]).join(", ")}
                 onChange={handleInputChange}
                 className="form-input mt-1"
               />

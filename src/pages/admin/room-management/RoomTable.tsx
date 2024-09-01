@@ -12,7 +12,7 @@ import UpdateRoomModal from "../../../components/updateModals/UpdateRoomModal";
 const RoomTable = () => {
   const initialRoom: TypeRoom = {
     name: "",
-    image: "",
+    image: [],
     roomNo: 0,
     floorNo: 0,
     capacity: 0,

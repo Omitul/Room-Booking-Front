@@ -7,13 +7,14 @@ import About from "../pages/about/About";
 import Contact from "../pages/contact/Contact";
 import MeetingRoom from "../pages/meetingroom/MeetingRoom";
 import Login from "../pages/login/Login";
-import { DetailsRoom } from "../pages/detailscard/DetailsRoom";
 import Register from "../pages/register/Register";
 import Booking from "../pages/admin/booking-management/Booking";
 import MyBookings from "../pages/mybookings/MyBookings";
 import Dashboard from "../pages/dashboard/Dashboard";
 import RoomDashBoard from "../pages/admin/room-management/RoomDashboard";
 import SlotDashboard from "../pages/admin/slots-management/SlotDashboard";
+import DetailsRoom from "../pages/detailscard/DetailsRoom";
+import Checkout from "../pages/checkout/Checkout";
 
 const router = createBrowserRouter([
   {
@@ -69,6 +70,10 @@ const router = createBrowserRouter([
       {
         path: "dashboard",
         element: <Dashboard></Dashboard>,
+      },
+      {
+        path: "checkout",
+        element: <Checkout></Checkout>,
       },
 
       // {

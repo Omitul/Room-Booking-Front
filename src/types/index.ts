@@ -22,7 +22,7 @@ export type TypeSlot = {
 export type TypeRoom = {
   _id?: string;
   name: string;
-  image: string;
+  image: string[];
   roomNo: number;
   floorNo: number;
   capacity: number;
@@ -45,5 +45,7 @@ export type DataItem = {
   room: TRoom;
   user: User;
   date: string;
+  startTime: string;
+  EndTime: string;
   isConfirmed: string;
 };
