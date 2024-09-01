@@ -80,6 +80,10 @@ const router = createBrowserRouter([
         path: "bookingform",
         element: <BookFormPage></BookFormPage>,
       },
+      {
+        path: "checkout",
+        element: <Checkout></Checkout>,
+      },
 
       // {
       //   path: "cart",

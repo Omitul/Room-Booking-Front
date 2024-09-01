@@ -10,13 +10,12 @@ export const RegistrationApi = baseApi.injectEndpoints({
       }),
     }),
 
-    // GetRoom: builder.query({
-    //   query: () => ({
-    //     url: "rooms",
-    //     method: "GET",
-    //   }),
-    //   providesTags: ["posts"],
-    // }),
+    GetRegisteredUser: builder.query({
+      query: (userId) => ({
+        url: `auth/signup/${userId}`,
+        method: "GET",
+      }),
+    }),
 
     // DeleteProduct: builder.mutation({
     //   query: (id: string) => ({
@@ -37,4 +36,5 @@ export const RegistrationApi = baseApi.injectEndpoints({
   }),
 });
 
-export const { useAddRegistrationMutation } = RegistrationApi;
+export const { useAddRegistrationMutation, useGetRegisteredUserQuery } =
+  RegistrationApi;

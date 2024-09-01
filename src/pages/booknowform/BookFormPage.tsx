@@ -2,15 +2,24 @@ import React, { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { getUserFromLocalStorage } from "../../utils/localStorage";
 import { useGetslotQuery } from "../../redux/features/Slot/Slot.api";
 import { formatISO } from "date-fns";
 import { TypeSlot } from "../../types";
+import { getTokenFromLocalStorage } from "../../utils/localStorage";
+import { useGetRegisteredUserQuery } from "../../redux/features/auth/registration.api";
+import { jwtDecode } from "jwt-decode";
+import { useNavigate } from "react-router-dom";
+
+interface JwtPayload {
+  userId: string;
+}
 
 const BookingForm = () => {
   const [date, setDate] = useState<Date | null>(null);
   const [dateConfirmed, setDateConfirmed] = useState<boolean>(false);
   const [selectedTimeSlot, setSelectedTimeSlot] = useState<string>("");
+  const navigate = useNavigate();
+
   const [user, setUser] = useState({
     name: "",
     email: "",
@@ -26,32 +35,20 @@ const BookingForm = () => {
     isError,
   } = useGetslotQuery(dateConfirmed ? formattedDate : "");
 
-  // Prepare available time slots from the API response
   const [availableTimeSlots, setAvailableTimeSlots] = useState<
     { displayTime: string; value: string }[]
   >([]);
 
   useEffect(() => {
     if (apiResponse && Array.isArray(apiResponse.data) && dateConfirmed) {
-      console.log("Formatted Date:", formattedDate);
-      console.log("Slots Data:", apiResponse.data);
-
       const formattedSlots = apiResponse.data
-        .filter((slot: TypeSlot) => {
-          console.log(
-            "Checking Slot Date:",
-            slot.date,
-            "against:",
-            formattedDate
-          );
-          return slot.date === formattedDate && !slot.isBooked;
-        })
+        .filter(
+          (slot: TypeSlot) => slot.date === formattedDate && !slot.isBooked
+        )
         .map((slot: TypeSlot) => ({
           displayTime: `${slot.startTime} - ${slot.endTime}`,
           value: `${slot.startTime}-${slot.endTime}`,
         }));
-
-      console.log("Formatted Slots:", formattedSlots);
 
       if (formattedSlots.length === 0) {
         Swal.fire({
@@ -63,25 +60,38 @@ const BookingForm = () => {
 
       setAvailableTimeSlots(formattedSlots);
     } else {
-      console.error(
-        "Expected apiResponse.data to be an array, but received:",
-        apiResponse
-      );
       setAvailableTimeSlots([]);
     }
   }, [apiResponse, formattedDate, dateConfirmed]);
 
+  const token = getTokenFromLocalStorage();
+  const decodedToken: JwtPayload | null = token
+    ? jwtDecode<JwtPayload>(token)
+    : null;
+
+  const userId = decodedToken ? decodedToken.userId : null;
+  const {
+    data,
+    isLoading: userLoading,
+    isError: userError,
+  } = useGetRegisteredUserQuery(userId || "", {
+    skip: !userId,
+  });
+  const userData = data?.data;
+
   useEffect(() => {
-    const localUser = getUserFromLocalStorage();
-    if (localUser) {
+    if (userData) {
       setUser({
-        name: localUser.name ?? "",
-        email: localUser.email ?? "",
-        phone: localUser.phone ?? "",
-        address: localUser.address ?? "",
+        name: userData.name || "",
+        email: userData.email || "",
+        phone: userData.phone || "",
+        address: userData.address || "",
       });
     }
-  }, []);
+  }, [userData]);
+
+  if (isLoading || userLoading) return <p>Loading...</p>;
+  if (isError || userError) return <p>Error loading data</p>;
 
   const handleDateChange = (date: Date | null) => {
     setDate(date);
@@ -114,29 +124,8 @@ const BookingForm = () => {
       return;
     }
 
-    try {
-      Swal.fire({
-        title: "Booking Confirmed!",
-        text: `Booking for ${user.name} on ${new Date(
-          date!
-        ).toDateString()} at ${selectedTimeSlot} has been confirmed.`,
-        icon: "success",
-      });
-    } catch (error) {
-      console.error("Booking Error:", error);
-      Swal.fire({
-        title: "Booking Failed!",
-        text: "There was an issue with your booking.",
-        icon: "error",
-      });
-    }
+    navigate("/checkout");
   };
-
-  if (isLoading) return <p>Loading...</p>;
-  if (isError) {
-    console.error("API Error:", isError);
-    return <p>Error loading slots</p>;
-  }
 
   return (
     <div className="p-6 max-w-lg mx-auto">
@@ -148,12 +137,12 @@ const BookingForm = () => {
           selected={date}
           onChange={handleDateChange}
           dateFormat="yyyy-MM-dd"
-          className="form-input mt-1"
+          className="form-input mt-1 border border-gray-300 rounded-md focus:border-blue-500 focus:outline-none"
         />
         <button
           type="button"
           onClick={handleConfirmDate}
-          className="btn bg-blue-500 text-white px-4 py-2 mt-2 rounded"
+          className="btn bg-blue-500 text-white  mt-2 rounded-lg ml-2"
         >
           Confirm Date
         </button>
@@ -193,7 +182,7 @@ const BookingForm = () => {
             name="name"
             value={user.name}
             onChange={(e) => setUser({ ...user, name: e.target.value })}
-            className="form-input mt-1"
+            className="form-input mt-1 border border-gray-300 rounded-md focus:border-blue-500 focus:outline-none"
             required
           />
         </div>
@@ -204,7 +193,7 @@ const BookingForm = () => {
             name="email"
             value={user.email}
             onChange={(e) => setUser({ ...user, email: e.target.value })}
-            className="form-input mt-1"
+            className="form-input mt-1 border border-gray-300 rounded-md focus:border-blue-500 focus:outline-none"
             required
           />
         </div>
@@ -215,7 +204,7 @@ const BookingForm = () => {
             name="phone"
             value={user.phone}
             onChange={(e) => setUser({ ...user, phone: e.target.value })}
-            className="form-input mt-1"
+            className="form-input mt-1 border border-gray-300 rounded-md focus:border-blue-500 focus:outline-none"
             required
           />
         </div>
@@ -226,7 +215,7 @@ const BookingForm = () => {
             name="address"
             value={user.address}
             onChange={(e) => setUser({ ...user, address: e.target.value })}
-            className="form-input mt-1"
+            className="form-input mt-1 border border-gray-300 rounded-md focus:border-blue-500 focus:outline-none"
             required
           />
         </div>
@@ -234,9 +223,10 @@ const BookingForm = () => {
         <div className="flex justify-end mt-4">
           <button
             type="submit"
+            onSubmit={handleSubmit}
             className="btn bg-green-500 text-white px-4 py-2 rounded"
           >
-            Confirm Booking
+            Checkout
           </button>
         </div>
       </form>

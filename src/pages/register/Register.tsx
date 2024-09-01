@@ -1,7 +1,6 @@
 import React from "react";
 import Swal from "sweetalert2";
 import { useAddRegistrationMutation } from "../../redux/features/auth/registration.api";
-import { setUserToLocalStorage } from "../../utils/localStorage"; // Ensure these functions are imported correctly
 
 const Registration = () => {
   const [addRegistration, { isLoading }] = useAddRegistrationMutation();
@@ -23,12 +22,6 @@ const Registration = () => {
       console.log(res);
 
       // Store user data, role, and token
-      setUserToLocalStorage({
-        name: data.name,
-        email: data.email,
-        phone: data.phone,
-        address: data.address,
-      });
 
       Swal.fire({
         title: "Success!",

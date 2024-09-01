@@ -1,5 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { TRoom } from "../../types";
+import { getRoleFromLocalStorage } from "../../utils/localStorage";
+import Swal from "sweetalert2";
 
 type RoomDetailsProps = {
   room: TRoom;
@@ -10,7 +12,22 @@ const RoomDetails: React.FC<RoomDetailsProps> = ({ room }) => {
 
   const navigate = useNavigate();
   const handleSeeDetails = () => {
-    navigate("/details-room", { state: room });
+    const role = getRoleFromLocalStorage();
+
+    console.log("ROLE", role);
+
+    if (role === null) {
+      Swal.fire({
+        title: "Access Denied",
+        text: "You need to log in or register to see this page.",
+        icon: "warning",
+        confirmButtonText: "OK",
+      }).then(() => {
+        navigate("/login");
+      });
+    } else {
+      navigate("/details-room", { state: room });
+    }
   };
 
   return (
