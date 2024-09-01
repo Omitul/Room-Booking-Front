@@ -8,11 +8,13 @@ import {
   removeTokenFromLocalStorage,
 } from "../../../utils/localStorage";
 
+// Define AuthState without user
 type AuthState = {
   role: string | null;
   token: string | null;
 };
 
+// Initialize state
 const initialState: AuthState = {
   role: getRoleFromLocalStorage(),
   token: getTokenFromLocalStorage(),

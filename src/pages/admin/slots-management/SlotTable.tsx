@@ -20,7 +20,8 @@ const SlotTable = () => {
     endTime: "",
   };
 
-  const { data: slotData, isLoading: isSlotLoading } = useGetslotQuery({});
+  const { data: slotData, isLoading: isSlotLoading } =
+    useGetslotQuery(undefined);
   const { data: roomData, isLoading: isRoomLoading } = useGetRoomQuery({});
   const [updateSlot] = useUpdateslotMutation();
   const [deleteSlot] = useDeleteslotMutation();

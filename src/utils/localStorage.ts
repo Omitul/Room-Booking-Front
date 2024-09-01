@@ -1,4 +1,4 @@
-export const getRoleFromLocalStorage = () => {
+export const getRoleFromLocalStorage = (): string | null => {
   return localStorage.getItem("userRole");
 };
 
@@ -10,7 +10,7 @@ export const removeRoleFromLocalStorage = () => {
   localStorage.removeItem("userRole");
 };
 
-export const getTokenFromLocalStorage = () => {
+export const getTokenFromLocalStorage = (): string | null => {
   return localStorage.getItem("authToken");
 };
 

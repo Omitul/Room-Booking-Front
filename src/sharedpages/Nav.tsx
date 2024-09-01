@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useAppSelector, useAppDispatch } from "../redux/hook";
 import { logout } from "../redux/features/auth/authSlice";
 
@@ -8,6 +8,8 @@ const Navbar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dispatch = useAppDispatch();
 
+  const navigate = useNavigate();
+
   const handleDropdownToggle = () => {
     setIsDropdownOpen((prev) => !prev);
   };
@@ -15,6 +17,7 @@ const Navbar = () => {
   const handleLogout = () => {
     dispatch(logout());
     alert("Logging out");
+    navigate("/");
   };
 
   const links = (

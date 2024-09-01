@@ -1,5 +1,4 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import Swal from "sweetalert2";
 import { TypeRoom } from "../../types";
 
 const DetailsRoom = () => {
@@ -11,20 +10,7 @@ const DetailsRoom = () => {
   const navigate = useNavigate();
 
   const handleAddToCart = () => {
-    Swal.fire({
-      icon: "info",
-      title: "Room Selection",
-      text: "Room selection is now available. Click 'See Details' to proceed.",
-      confirmButtonText: "See Details",
-      cancelButtonText: "Cancel",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        navigate("/cart", { state: room });
-      }
-    });
+    navigate("/bookingform", { state: room });
   };
 
   return (

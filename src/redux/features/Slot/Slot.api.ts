@@ -13,10 +13,26 @@ export const SlotApi = baseApi.injectEndpoints({
     }),
 
     Getslot: builder.query({
-      query: () => ({
-        url: "slots/availability",
-        method: "GET",
-      }),
+      query: (date?: string) => {
+        let url = "slots/availability";
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const params: Record<string, any> = {};
+
+        if (date) {
+          params.date = date;
+        }
+
+        // Construct URL with query parameters if any
+        const queryString = new URLSearchParams(params).toString();
+        if (queryString) {
+          url += `?${queryString}`;
+        }
+
+        return {
+          url,
+          method: "GET",
+        };
+      },
       providesTags: ["posts"],
     }),
 

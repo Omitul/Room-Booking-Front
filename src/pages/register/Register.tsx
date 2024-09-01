@@ -1,6 +1,7 @@
 import React from "react";
 import Swal from "sweetalert2";
 import { useAddRegistrationMutation } from "../../redux/features/auth/registration.api";
+import { setUserToLocalStorage } from "../../utils/localStorage"; // Ensure these functions are imported correctly
 
 const Registration = () => {
   const [addRegistration, { isLoading }] = useAddRegistrationMutation();
@@ -19,13 +20,25 @@ const Registration = () => {
 
     try {
       const res = await addRegistration(data).unwrap();
+      console.log(res);
+
+      // Store user data, role, and token
+      setUserToLocalStorage({
+        name: data.name,
+        email: data.email,
+        phone: data.phone,
+        address: data.address,
+      });
+
       Swal.fire({
         title: "Success!",
         text: "Successfully Registered",
         icon: "success",
         confirmButtonText: "OK",
       });
-      console.log("role", res.data.role);
+
+      // Optionally navigate to the login page or another page
+      // navigate("/login"); // Uncomment if you want to navigate after registration
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       console.error("Registration failed:", error);
@@ -109,7 +122,6 @@ const Registration = () => {
             required
           />
         </div>
-
         <div className="mb-4">
           <label
             htmlFor="role"
@@ -125,7 +137,6 @@ const Registration = () => {
             required
           />
         </div>
-
         <div className="mb-4">
           <label
             htmlFor="address"
@@ -141,7 +152,6 @@ const Registration = () => {
             required
           />
         </div>
-
         <button
           type="submit"
           className="w-full py-2 px-4 bg-blue-500 text-white font-semibold rounded-md shadow-sm hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"

@@ -17,6 +17,7 @@ export type TypeSlot = {
   date: string;
   startTime: string;
   endTime: string;
+  isbooked?: boolean;
 };
 
 export type TypeRoom = {

@@ -15,6 +15,7 @@ import RoomDashBoard from "../pages/admin/room-management/RoomDashboard";
 import SlotDashboard from "../pages/admin/slots-management/SlotDashboard";
 import DetailsRoom from "../pages/detailscard/DetailsRoom";
 import Checkout from "../pages/checkout/Checkout";
+import BookFormPage from "../pages/booknowform/BookFormPage";
 
 const router = createBrowserRouter([
   {
@@ -74,6 +75,10 @@ const router = createBrowserRouter([
       {
         path: "checkout",
         element: <Checkout></Checkout>,
+      },
+      {
+        path: "bookingform",
+        element: <BookFormPage></BookFormPage>,
       },
 
       // {
