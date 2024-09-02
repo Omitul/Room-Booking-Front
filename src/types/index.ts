@@ -8,11 +8,12 @@ export type TRoom = {
   pricePerSlot: number;
   amenities: string[];
   isDeleted: boolean;
+  room?: string;
 };
 
 export type TypeSlot = {
   _id?: string;
-  room?: string;
+  room?: TypeRoom;
   roomName: string;
   date: string;
   startTime: string;

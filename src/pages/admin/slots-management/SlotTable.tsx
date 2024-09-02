@@ -98,32 +98,21 @@ const SlotTable = () => {
     }
   };
 
-  const FetchRoomName = (roomId: string) => {
-    const room = roomData?.data.find((r: TypeRoom) => r._id === roomId);
-    return room
-      ? { Name: room.name, RoomNo: room.roomNo }
-      : { Name: "Unknown Room", RoomNo: "N/A" };
-  };
-
   const columns = [
     {
       name: (
         <div style={{ fontSize: "2rem", fontWeight: "bold" }}>Room Name</div>
       ),
-      selector: (row: TypeSlot) => row.roomName,
+      selector: (row: TypeSlot) => row.room?.name ?? "",
       cell: (row: TypeSlot) => {
-        const { Name } = FetchRoomName(row.room as string);
-        return <div style={{ fontSize: "1.5rem" }}>{Name}</div>;
+        return <div style={{ fontSize: "1.5rem" }}>{row.room?.name}</div>;
       },
     },
     {
-      name: (
-        <div style={{ fontSize: "2rem", fontWeight: "bold" }}>Room No.</div>
-      ),
-      selector: (row: TypeSlot) => row.roomName,
+      name: <div style={{ fontSize: "2rem", fontWeight: "bold" }}>Room No</div>,
+      selector: (row: TypeSlot) => row.room?.roomNo ?? "",
       cell: (row: TypeSlot) => {
-        const { RoomNo } = FetchRoomName(row.room as string);
-        return <div style={{ fontSize: "1.5rem" }}>{RoomNo}</div>;
+        return <div style={{ fontSize: "1.5rem" }}>{row.room?.roomNo}</div>;
       },
     },
     {
@@ -177,12 +166,14 @@ const SlotTable = () => {
       </div>
       <div className="md:hidden">
         {slotData.data.map((row: TypeSlot) => {
-          const { Name, RoomNo } = FetchRoomName(row.room as string);
-
           return (
             <div key={row._id} className="mb-4 p-4 border rounded-lg">
-              <div className="text-sm text-gray-500">Room Name: {Name}</div>
-              <div className="text-sm text-gray-500">Room No.: {RoomNo}</div>
+              <div className="text-sm text-gray-500">
+                Room Name: {row.room?.name}
+              </div>
+              <div className="text-sm text-gray-500">
+                Room No.: {row.room?.roomNo}
+              </div>
               <div className="text-sm text-gray-500">Date: {row.date}</div>
               <div className="text-sm text-gray-500">
                 Time: {row.startTime} - {row.endTime}
