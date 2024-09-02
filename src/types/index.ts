@@ -12,6 +12,8 @@ export type TRoom = {
 };
 
 export type TypeSlot = {
+  userName: string;
+  isConfirmed: string;
   _id?: string;
   room?: TypeRoom;
   roomName: string;

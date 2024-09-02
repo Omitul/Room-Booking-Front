@@ -1,4 +1,3 @@
-import React from "react";
 import DataTable from "react-data-table-component";
 import Swal from "sweetalert2";
 import {
@@ -6,53 +5,102 @@ import {
   useGetBookingsQuery,
   useUpdateBookingsMutation,
 } from "../../../redux/features/Booking/Booking.api";
-import { DataItem } from "../../../types";
 
+/// declaring types here , dont have to see the index again and again
+type TypeRoom = {
+  _id?: string;
+  name: string;
+  image: string[];
+  roomNo: number;
+  floorNo: number;
+  capacity: number;
+  pricePerSlot: number;
+  amenities: string[];
+  isDeleted?: boolean;
+};
+
+type TypeSlot = {
+  isConfirmed: string;
+  userName: string;
+  _id: string;
+  room?: TypeRoom;
+  roomName: string;
+  date: string;
+  startTime: string;
+  endTime: string;
+  isBooked?: boolean;
+};
+
+type User = {
+  _id: string;
+  name: string;
+  email: string;
+  phone: string;
+  role: string;
+  address: string;
+};
+
+type DataItem = {
+  _id: string;
+  room: TypeRoom;
+  user: User;
+  date: string;
+  isConfirmed: string;
+  slots: TypeSlot[];
+};
+
+const transformData = (data: DataItem[]): TypeSlot[] =>
+  data.flatMap((booking) =>
+    booking.slots.map((slot) => ({
+      _id: booking._id,
+      roomName: booking.room.name,
+      userName: booking.user.name,
+      date: slot.date,
+      startTime: slot.startTime,
+      endTime: slot.endTime,
+      isConfirmed: booking.isConfirmed,
+    }))
+  );
 const Booking = () => {
-  const { data, isLoading } = useGetBookingsQuery({});
+  const { data, isLoading, refetch } = useGetBookingsQuery({});
   const [updateBooking] = useUpdateBookingsMutation();
   const [deleteBooking] = useDeleteBookingsMutation();
 
   if (isLoading) {
-    return (
-      <p className="text-center text-xs sm:text-sm md:text-base">
-        Loading.......
-      </p>
-    );
+    return <p className="text-center text-xl">Loading.......</p>;
   }
 
-  if (!data) {
-    return (
-      <p className="text-center text-xs sm:text-sm md:text-base">
-        No data is present
-      </p>
-    );
+  if (!data || !data.data) {
+    return <p className="text-center text-xl">No data is present</p>;
   }
+
+  const transformedData = transformData(data.data);
 
   const handleApprove = async (id: string) => {
     try {
-      const res = await updateBooking({
+      await updateBooking({
         id,
         payload: { isConfirmed: "confirmed" },
       }).unwrap();
+
       Swal.fire("Booking Approved!", "", "success");
-      console.log(res);
+      refetch();
     } catch (error) {
-      console.error("Failed to approve:", error);
+      console.error("Failed to approve booking:", error);
       Swal.fire("Failed to approve booking", "", "error");
     }
   };
 
   const handleReject = async (id: string) => {
     try {
-      const res = await updateBooking({
+      await updateBooking({
         id,
         payload: { isConfirmed: "canceled" },
       }).unwrap();
       Swal.fire("Booking Rejected!", "", "success");
-      console.log(res);
+      refetch();
     } catch (error) {
-      console.error("Failed to reject:", error);
+      console.error("Failed to reject booking:", error);
       Swal.fire("Failed to reject booking", "", "error");
     }
   };
@@ -71,65 +119,47 @@ const Booking = () => {
 
     if (result.isConfirmed) {
       try {
-        const res = await deleteBooking(id).unwrap();
+        await deleteBooking(id).unwrap();
         Swal.fire("Booking Deleted!", "", "success");
-        console.log(res);
+        refetch();
       } catch (error) {
-        console.error("Failed to Delete:", error);
-        Swal.fire("Failed to Delete booking", "", "error");
+        console.error("Failed to delete booking:", error);
+        Swal.fire("Failed to delete booking", "", "error");
       }
     }
   };
 
   const columns = [
     {
-      name: (
-        <div className="text-xs sm:text-sm md:text-base lg:text-lg font-semibold">
-          Room Name
-        </div>
-      ),
-      selector: (row: DataItem) => row.room.name,
-      cell: (row: DataItem) => (
-        <div className="text-xs sm:text-sm md:text-base lg:text-lg">
-          {row.room?.name}
-        </div>
-      ),
+      name: "Room Name",
+      selector: (row: TypeSlot) => row.roomName,
+      cell: (row: TypeSlot) => <div className="text-lg">{row.roomName}</div>,
     },
     {
-      name: (
-        <div className="text-xs sm:text-sm md:text-base lg:text-lg font-semibold">
-          User Name
-        </div>
-      ),
-      selector: (row: DataItem) => row.user.name,
-      cell: (row: DataItem) => (
-        <div className="text-xs sm:text-sm md:text-base lg:text-lg">
-          {row.user.name}
-        </div>
-      ),
+      name: "User Name",
+      selector: (row: TypeSlot) => row.userName,
+      cell: (row: TypeSlot) => <div className="text-lg">{row.userName}</div>,
     },
     {
-      name: (
-        <div className="text-xs sm:text-sm md:text-base lg:text-lg font-semibold">
-          Date
-        </div>
-      ),
-      selector: (row: DataItem) => `${row.date}`,
-      cell: (row: DataItem) => (
-        <div className="text-xs sm:text-sm md:text-base lg:text-lg">
-          {`${row.date}`}
-        </div>
-      ),
+      name: "Date",
+      selector: (row: TypeSlot) => row.date,
+      cell: (row: TypeSlot) => <div className="text-lg">{row.date}</div>,
     },
     {
-      name: (
-        <div className="text-xs sm:text-sm md:text-base lg:text-lg font-semibold">
-          Status
-        </div>
-      ),
-      selector: (row: DataItem) => row.isConfirmed,
-      cell: (row: DataItem) => (
-        <div className="text-xs sm:text-sm md:text-base lg:text-lg">
+      name: "Start Time",
+      selector: (row: TypeSlot) => row.startTime,
+      cell: (row: TypeSlot) => <div className="text-lg">{row.startTime}</div>,
+    },
+    {
+      name: "End Time",
+      selector: (row: TypeSlot) => row.endTime,
+      cell: (row: TypeSlot) => <div className="text-lg">{row.endTime}</div>,
+    },
+    {
+      name: "Status",
+      selector: (row: TypeSlot) => row.isConfirmed,
+      cell: (row: TypeSlot) => (
+        <div className="text-lg">
           {row.isConfirmed === "confirmed" ? (
             <span className="text-green-500 font-bold">Confirmed</span>
           ) : row.isConfirmed === "canceled" ? (
@@ -141,23 +171,23 @@ const Booking = () => {
       ),
     },
     {
-      cell: (row: DataItem) => (
+      cell: (row: TypeSlot) => (
         <div className="flex flex-col sm:flex-row gap-2">
           <button
-            className="btn bg-green-500 text-white text-xs sm:text-sm md:text-base lg:text-lg py-2 px-4"
-            onClick={() => handleApprove(row._id)}
+            className="btn bg-green-500 text-white py-2 px-3"
+            onClick={() => handleApprove(row._id as string)}
           >
             Approve
           </button>
           <button
-            className="btn bg-yellow-500 text-white text-xs sm:text-sm md:text-base lg:text-lg py-2 px-4"
-            onClick={() => handleReject(row._id)}
+            className="btn bg-yellow-500 text-white py-2 px-3"
+            onClick={() => handleReject(row._id as string)}
           >
             Reject
           </button>
           <button
-            className="btn bg-red-500 text-white text-xs sm:text-sm md:text-base lg:text-lg py-2 px-4"
-            onClick={() => handleDelete(row._id)}
+            className="btn bg-red-500 text-white py-2 px-3"
+            onClick={() => row._id && handleDelete(row._id)}
           >
             Delete
           </button>
@@ -167,15 +197,15 @@ const Booking = () => {
   ];
 
   return (
-    <div className="p-4 sm:p-6 md:p-8 lg:p-10 overflow-x-auto">
+    <div className="p-6 overflow-x-auto">
       <DataTable
         columns={columns}
-        data={data.data}
+        data={transformedData}
         responsive
         highlightOnHover
         pointerOnHover
         noDataComponent="No bookings available"
-        className="text-xs sm:text-sm md:text-base lg:text-lg"
+        className="text-lg"
       />
     </div>
   );

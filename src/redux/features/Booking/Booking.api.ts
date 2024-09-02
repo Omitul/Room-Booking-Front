@@ -23,7 +23,8 @@ export const BookingsApi = baseApi.injectEndpoints({
 
     UpdateBookings: builder.mutation({
       query: (data: { id: string; payload: BookingPayload }) => {
-        console.log("UpdateBookings payload:", data.payload);
+        console.log("dataId", data.id);
+        console.log("UpdateBookings payload:", data.id);
         return {
           url: `bookings/${data.id}`,
           method: "PUT",
