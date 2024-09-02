@@ -23,7 +23,7 @@ const DetailsRoom = () => {
                 <img
                   key={index}
                   src={imgSrc}
-                  className="w-full h-auto object-cover rounded-md"
+                  className="w-full h-64 object-cover rounded-md"
                   alt={`${name} image ${index + 1}`}
                 />
               ))}
