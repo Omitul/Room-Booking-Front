@@ -48,6 +48,26 @@ const MyBookings = () => {
       ),
       style: { fontSize: "1.2rem", fontWeight: "bold" },
     },
+    {
+      name: "Status",
+      selector: (row: TypeSlot) => row.isConfirmed,
+      cell: (row: TypeSlot) => (
+        <div style={{ fontSize: "1.2rem" }}>
+          {row.isConfirmed === "confirmed" ? (
+            <span style={{ color: "green", fontWeight: "bold" }}>
+              Confirmed
+            </span>
+          ) : row.isConfirmed === "canceled" ? (
+            <span style={{ color: "red", fontWeight: "bold" }}>Canceled</span>
+          ) : (
+            <span style={{ color: "orange", fontWeight: "bold" }}>
+              Unconfirmed
+            </span>
+          )}
+        </div>
+      ),
+      style: { fontSize: "1.2rem", fontWeight: "bold" },
+    },
   ];
 
   return (

@@ -34,6 +34,14 @@ export const BookingsApi = baseApi.injectEndpoints({
       invalidatesTags: ["posts"],
     }),
 
+    GetMyBookings: builder.query({
+      query: () => ({
+        url: "my-bookings",
+        method: "GET",
+      }),
+      providesTags: ["posts"],
+    }),
+
     // }),
   }),
 });
@@ -42,4 +50,5 @@ export const {
   useGetBookingsQuery,
   useUpdateBookingsMutation,
   useDeleteBookingsMutation,
+  useGetMyBookingsQuery,
 } = BookingsApi;

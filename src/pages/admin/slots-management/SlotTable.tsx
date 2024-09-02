@@ -18,6 +18,8 @@ const SlotTable = () => {
     date: "",
     startTime: "",
     endTime: "",
+    userName: "",
+    isConfirmed: "",
   };
 
   const { data: slotData, isLoading: isSlotLoading } =
@@ -27,13 +29,13 @@ const SlotTable = () => {
   const [deleteSlot] = useDeleteslotMutation();
   const [showUpdateModal, setShowUpdateModal] = useState(false);
   const [selectedSlot, setSelectedSlot] = useState<TypeSlot>(initialSlot);
-  const [slots, setSlots] = useState<Record<string, string>>({});
+  const [slots, setSlots] = useState<Record<string, TypeRoom>>({});
 
   useEffect(() => {
     if (roomData) {
       const roomMap = roomData.data.reduce(
-        (acc: Record<string, string>, room: TypeRoom) => {
-          acc[room.name] = room._id as string;
+        (acc: Record<string, TypeRoom>, room: TypeRoom) => {
+          acc[room.name] = room;
           return acc;
         },
         {}
@@ -73,7 +75,6 @@ const SlotTable = () => {
         try {
           const res = await deleteSlot(slotId).unwrap();
           console.log(res);
-
           Swal.fire("Deleted Successfully!", "", "success");
         } catch (error) {
           console.error("Failed to delete:", error);
@@ -104,16 +105,16 @@ const SlotTable = () => {
         <div style={{ fontSize: "2rem", fontWeight: "bold" }}>Room Name</div>
       ),
       selector: (row: TypeSlot) => row.room?.name ?? "",
-      cell: (row: TypeSlot) => {
-        return <div style={{ fontSize: "1.5rem" }}>{row.room?.name}</div>;
-      },
+      cell: (row: TypeSlot) => (
+        <div style={{ fontSize: "1.5rem" }}>{row.room?.name}</div>
+      ),
     },
     {
       name: <div style={{ fontSize: "2rem", fontWeight: "bold" }}>Room No</div>,
       selector: (row: TypeSlot) => row.room?.roomNo ?? "",
-      cell: (row: TypeSlot) => {
-        return <div style={{ fontSize: "1.5rem" }}>{row.room?.roomNo}</div>;
-      },
+      cell: (row: TypeSlot) => (
+        <div style={{ fontSize: "1.5rem" }}>{row.room?.roomNo}</div>
+      ),
     },
     {
       name: <div style={{ fontSize: "2rem", fontWeight: "bold" }}>Date</div>,
@@ -165,36 +166,34 @@ const SlotTable = () => {
         <DataTable columns={columns} data={slotData.data} />
       </div>
       <div className="md:hidden">
-        {slotData.data.map((row: TypeSlot) => {
-          return (
-            <div key={row._id} className="mb-4 p-4 border rounded-lg">
-              <div className="text-sm text-gray-500">
-                Room Name: {row.room?.name}
-              </div>
-              <div className="text-sm text-gray-500">
-                Room No.: {row.room?.roomNo}
-              </div>
-              <div className="text-sm text-gray-500">Date: {row.date}</div>
-              <div className="text-sm text-gray-500">
-                Time: {row.startTime} - {row.endTime}
-              </div>
-              <div className="mt-2 flex space-x-2">
-                <button
-                  className="btn bg-purple-400 text-white py-2 px-4 rounded"
-                  onClick={() => handleUpdate(row)}
-                >
-                  Update
-                </button>
-                <button
-                  className="btn bg-red-600 text-white py-2 px-4 rounded"
-                  onClick={() => handleDelete(row._id as string)}
-                >
-                  Delete
-                </button>
-              </div>
+        {slotData.data.map((row: TypeSlot) => (
+          <div key={row._id} className="mb-4 p-4 border rounded-lg">
+            <div className="text-sm text-gray-500">
+              Room Name: {row.room?.name}
             </div>
-          );
-        })}
+            <div className="text-sm text-gray-500">
+              Room No.: {row.room?.roomNo}
+            </div>
+            <div className="text-sm text-gray-500">Date: {row.date}</div>
+            <div className="text-sm text-gray-500">
+              Time: {row.startTime} - {row.endTime}
+            </div>
+            <div className="mt-2 flex space-x-2">
+              <button
+                className="btn bg-purple-400 text-white py-2 px-4 rounded"
+                onClick={() => handleUpdate(row)}
+              >
+                Update
+              </button>
+              <button
+                className="btn bg-red-600 text-white py-2 px-4 rounded"
+                onClick={() => handleDelete(row._id as string)}
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        ))}
       </div>
 
       {showUpdateModal && selectedSlot && (

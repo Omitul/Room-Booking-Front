@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
-import { TypeSlot } from "../../types";
+import { TypeSlot, TypeRoom } from "../../types";
 
 type UpdateSlotModalProps = {
   slot: TypeSlot;
   onUpdate: (updatedSlot: TypeSlot) => Promise<void>;
   onClose: () => void;
-  slots: Record<string, string>;
+  slots: Record<string, TypeRoom>; // Adjusted to use TypeRoom
 };
 
 const UpdateSlotModal = ({
@@ -20,6 +20,8 @@ const UpdateSlotModal = ({
     date: slot.date,
     startTime: slot.startTime,
     endTime: slot.endTime,
+    userName: slot.userName, // Added
+    isConfirmed: slot.isConfirmed, // Added
   });
 
   useEffect(() => {
@@ -28,6 +30,8 @@ const UpdateSlotModal = ({
       date: slot.date,
       startTime: slot.startTime,
       endTime: slot.endTime,
+      userName: slot.userName, // Added
+      isConfirmed: slot.isConfirmed, // Added
     });
   }, [slot]);
 
@@ -44,10 +48,15 @@ const UpdateSlotModal = ({
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const updatedSlot = {
+      const room = slots[formData.roomName];
+      if (!room) {
+        throw new Error("Room not found");
+      }
+      const updatedSlot: TypeSlot = {
         ...formData,
         _id: slot._id,
-        room: slots[formData.roomName] || slot.room,
+        room,
+        isbooked: slot.isbooked,
       };
       await onUpdate(updatedSlot);
       onClose();

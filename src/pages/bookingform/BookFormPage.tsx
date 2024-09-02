@@ -8,17 +8,18 @@ import { TypeSlot } from "../../types";
 import { getTokenFromLocalStorage } from "../../utils/localStorage";
 import { useGetRegisteredUserQuery } from "../../redux/features/auth/registration.api";
 import { jwtDecode } from "jwt-decode";
-import { useNavigate } from "react-router-dom";
+import { useOrderslotMutation } from "../../redux/features/order/order.api";
 
 interface JwtPayload {
   userId: string;
 }
 
-const BookingForm = () => {
+const BookingFormPage = () => {
   const [date, setDate] = useState<Date | null>(null);
   const [dateConfirmed, setDateConfirmed] = useState<boolean>(false);
   const [selectedTimeSlot, setSelectedTimeSlot] = useState<string>("");
-  const navigate = useNavigate();
+  const [selectedPaymentMethod, setSelectedPaymentMethod] =
+    useState<string>("");
 
   const [user, setUser] = useState({
     name: "",
@@ -43,7 +44,7 @@ const BookingForm = () => {
     if (apiResponse && Array.isArray(apiResponse.data) && dateConfirmed) {
       const formattedSlots = apiResponse.data
         .filter(
-          (slot: TypeSlot) => slot.date === formattedDate && !slot.isBooked
+          (slot: TypeSlot) => slot.date === formattedDate && !slot.isbooked
         )
         .map((slot: TypeSlot) => ({
           displayTime: `${slot.startTime} - ${slot.endTime}`,
@@ -90,6 +91,8 @@ const BookingForm = () => {
     }
   }, [userData]);
 
+  const [placeOrder] = useOrderslotMutation();
+
   if (isLoading || userLoading) return <p>Loading...</p>;
   if (isError || userError) return <p>Error loading data</p>;
 
@@ -113,8 +116,15 @@ const BookingForm = () => {
     setSelectedTimeSlot(e.target.value);
   };
 
+  const handlePaymentMethodChange = (
+    e: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    setSelectedPaymentMethod(e.target.value);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     if (!selectedTimeSlot) {
       Swal.fire({
         title: "Select Time Slot",
@@ -124,7 +134,32 @@ const BookingForm = () => {
       return;
     }
 
-    navigate("/checkout");
+    if (!selectedPaymentMethod) {
+      Swal.fire({
+        title: "Select Payment Method",
+        text: "Please select a payment method before submitting the form.",
+        icon: "warning",
+      });
+      return;
+    }
+
+    const payload = {
+      name: user.name,
+      email: user.email,
+      phone: user.phone,
+      address: user.address,
+      date: formattedDate,
+      timeSlot: selectedTimeSlot,
+      payment: selectedPaymentMethod,
+    };
+
+    try {
+      await placeOrder(payload).unwrap();
+      Swal.fire("Success", "Order placed successfully", "success");
+    } catch (error) {
+      console.error("Order placement failed:", error);
+      Swal.fire("Error", "Failed to place order", "error");
+    }
   };
 
   return (
@@ -142,7 +177,7 @@ const BookingForm = () => {
         <button
           type="button"
           onClick={handleConfirmDate}
-          className="btn bg-blue-500 text-white  mt-2 rounded-lg ml-2"
+          className="btn bg-blue-500 text-white mt-2 rounded-lg ml-2"
         >
           Confirm Date
         </button>
@@ -220,13 +255,32 @@ const BookingForm = () => {
           />
         </div>
 
+        <div className="mb-6">
+          <label className="block font-semibold mb-2">Payment Method</label>
+          <select
+            name="payment"
+            value={selectedPaymentMethod}
+            onChange={handlePaymentMethodChange}
+            className="form-select mt-1 border border-gray-300 rounded-md focus:border-blue-500 focus:outline-none"
+            required
+          >
+            <option value="" disabled>
+              Select a payment method
+            </option>
+            <option value="Bank Transfer">Bank Transfer</option>
+            <option value="Credit Card">Credit Card</option>
+            <option value="Paypal">Paypal</option>
+            <option value="Bkash">Bkash</option>
+            <option value="Nagad">Nagad</option>
+          </select>
+        </div>
+
         <div className="flex justify-end mt-4">
           <button
             type="submit"
-            onSubmit={handleSubmit}
             className="btn bg-green-500 text-white px-4 py-2 rounded"
           >
-            Checkout
+            Place Order
           </button>
         </div>
       </form>
@@ -234,4 +288,4 @@ const BookingForm = () => {
   );
 };
 
-export default BookingForm;
+export default BookingFormPage;

@@ -1,14 +1,21 @@
 import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
-import { TypeRoom, TypeSlot } from "../../../types";
+import { TypeRoom } from "../../../types";
 import { useAddslotMutation } from "../../../redux/features/Slot/Slot.api"; // Add useGetRoomQuery if you have it
 import SlotTable from "./SlotTable";
 import { useGetRoomQuery } from "../../../redux/features/Room/Room.api";
 
+type FormData = {
+  roomName: string;
+  date: string;
+  startTime: string;
+  endTime: string;
+};
+
 const SlotDashboard = () => {
   const [addSlot, { isLoading }] = useAddslotMutation();
   const [showModal, setShowModal] = useState(false);
-  const [formData, setFormData] = useState<TypeSlot>({
+  const [formData, setFormData] = useState<FormData>({
     roomName: "",
     date: "",
     startTime: "",

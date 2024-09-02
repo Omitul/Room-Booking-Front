@@ -12,12 +12,12 @@ export type TRoom = {
 };
 
 export type TypeSlot = {
+  _id?: string;
+  room?: TypeRoom; // Ensure this is TypeRoom
+  date: string;
   userName: string;
   isConfirmed: string;
-  _id?: string;
-  room?: TypeRoom;
   roomName: string;
-  date: string;
   startTime: string;
   endTime: string;
   isbooked?: boolean;

@@ -13,9 +13,9 @@ import RoomDashBoard from "../pages/admin/room-management/RoomDashboard";
 import SlotDashboard from "../pages/admin/slots-management/SlotDashboard";
 import DetailsRoom from "../pages/detailscard/DetailsRoom";
 import Checkout from "../pages/checkout/Checkout";
-import BookFormPage from "../pages/booknowform/BookFormPage";
 import NotFoundPage from "../pages/notfound/NotFoundRoute";
 import ProtectedRoute from "../components/layout/ProtectedRoute";
+import BookingFormPage from "../pages/bookingform/BookFormPage";
 
 const router = createBrowserRouter([
   {
@@ -88,7 +88,7 @@ const router = createBrowserRouter([
         path: "bookingform",
         element: (
           <ProtectedRoute>
-            <BookFormPage />
+            <BookingFormPage />
           </ProtectedRoute>
         ),
       },
