@@ -4,11 +4,13 @@ import { useGetRoomQuery } from "../../redux/features/Room/Room.api";
 import { TRoom } from "../../types";
 
 const Featured = () => {
-  const { data, isLoading } = useGetRoomQuery(undefined);
+  const { data, isLoading } = useGetRoomQuery({});
 
   if (isLoading) {
     <p className="text-2xl text-center text-black-500"> Loading...</p>;
   }
+
+  console.log("data", data);
 
   console.log(data);
   const navigate = useNavigate();
