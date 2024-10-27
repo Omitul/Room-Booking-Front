@@ -6,7 +6,7 @@ This is a website where user can book rooms according to available slots for mee
 
 - [React.js Documentation](https://legacy.reactjs.org/docs/getting-started.html)
 - [Daisy UI](https://daisyui.com/)
-- [Redux] (https://redux.js.org/)
+- [Redux](https://redux.js.org/)
 - [Tailwind CSS](https://tailwindcss.com/)
 - [Tailwind Variants](https://tailwind-variants.org)
 - [TypeScript](https://www.typescriptlang.org/)
